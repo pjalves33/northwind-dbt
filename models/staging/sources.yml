@@ -1,0 +1,54 @@
+version: 2
+
+sources:
+  - name: bronze
+    catalog: workspace
+    schema: bronze
+    tables:
+      - name: orders
+        columns:
+          - name: OrderID
+            tests:
+              - not_null
+              - unique
+      - name: orderdetails
+        columns:
+          - name: OrderID
+            tests:
+              - not_null
+      - name: customers
+        columns:
+          - name: CustomerID
+            tests:
+              - not_null
+              - unique
+      - name: products
+        columns:
+          - name: ProductID
+            tests:
+              - not_null
+              - unique
+      - name: employees
+        columns:
+          - name: EmployeeID
+            tests:
+              - not_null
+              - unique
+      - name: categories
+        columns:
+          - name: CategoryID
+            tests:
+              - not_null
+              - unique
+      - name: suppliers
+        columns:
+          - name: SupplierID
+            tests:
+              - not_null
+              - unique
+      - name: shippers
+        columns:
+          - name: ShipperID
+            tests:
+              - not_null
+              - unique
