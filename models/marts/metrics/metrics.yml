@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: agg_revenue_daily
+    description: "Receita agregada por dia e país. Materialização incremental controlada por updated_at."
+    columns:
+      - name: order_date
+        description: "Data do pedido."
+        tests:
+          - not_null
+      - name: ship_country
+        description: "País de destino do pedido."
+        tests:
+          - not_null
+      - name: total_orders
+        description: "Total de pedidos no dia e país."
+      - name: total_revenue
+        description: "Receita total no dia e país."
+      - name: avg_order_value
+        description: "Ticket médio no dia e país."
+      - name: avg_days_to_ship
+        description: "Média de dias para envio no dia e país."
+
+  - name: agg_revenue_by_country
+    description: "Receita agregada por país. Visão consolidada de performance geográfica."
+    columns:
+      - name: ship_country
+        description: "País de destino."
+        tests:
+          - not_null
+          - unique
+      - name: total_customers
+        description: "Total de clientes distintos no país."
+      - name: total_orders
+        description: "Total de pedidos no país."
+      - name: total_revenue
+        description: "Receita total no país."
+
+  - name: agg_top_products
+    description: "Ranking de produtos por receita. Útil para análise de mix de produtos."
+    columns:
+      - name: product_name
+        description: "Nome do produto."
+        tests:
+          - not_null
+      - name: category_name
+        description: "Categoria do produto."
+      - name: total_units_sold
+        description: "Total de unidades vendidas."
+      - name: total_revenue
+        description: "Receita total gerada pelo produto."
