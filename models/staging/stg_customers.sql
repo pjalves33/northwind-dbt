@@ -1,5 +1,14 @@
 with source as (
-    select * from {{ source('bronze', 'customers') }}
+    select *,
+    first_value(CustomerID)
+    over(partition by CompanyName, ContactName
+    order by CompanyName
+    rows between unbounded preceding and unbounded following) as result 
+    from {{ source('bronze', 'customers') }}
+),
+
+removed as (
+    select distinct result from source
 ),
 
 renamed as (
@@ -11,6 +20,7 @@ renamed as (
         City         as city,
         Country      as country
     from source
+    where CustomerID in (select result from removed)
 )
 
 select * from renamed
