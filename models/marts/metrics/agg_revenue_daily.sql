@@ -2,13 +2,19 @@
     config(
         materialized='incremental',
         unique_key=['order_date', 'ship_country'],
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        partition_by='order_date',
+        on_schema_change='sync_all_columns'
     )
 }}
 
 with max_updated as (
     {% if is_incremental() %}
-        select max(updated_at) as max_ts from {{ this }}
+        {% if adapter.get_columns_in_relation(this) | selectattr('name', 'equalto', 'updated_at') | list | length > 0 %}
+            select max(updated_at) as max_ts from {{ this }}
+        {% else %}
+            select cast('1900-01-01' as timestamp) as max_ts
+        {% endif %}
     {% else %}
         select cast('1900-01-01' as timestamp) as max_ts
     {% endif %}

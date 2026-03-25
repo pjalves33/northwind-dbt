@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='table',
+        partition_by='last_order_date'
+    )
+}}
+
 with fct_orders as (
     select * from {{ ref('fct_orders') }}
 ),
