@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='table',
+        partition_by='last_order_date'
+    )
+}}
+
 with customers as (
     select * from {{ ref('stg_customers') }}
 ),
